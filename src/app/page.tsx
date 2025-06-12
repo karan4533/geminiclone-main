@@ -42,6 +42,17 @@ export default function Home() {
 
       if (data.error) {
         console.error("AI Error:", data.error);
+        
+        // Add a user-friendly error message to chat
+        const errorMessage: Message = {
+          role: "model" as MessageRole,
+          parts: [{ 
+            text: data.error.includes("429") || data.error.includes("quota") 
+              ? "⚠️ Rate limit exceeded. Please try again in a few minutes or switch to a different model in settings."
+              : `❌ Error: ${data.error}`
+          }],
+        };
+        setHistory([...updatedHistory, errorMessage]);
         return;
       }
 
