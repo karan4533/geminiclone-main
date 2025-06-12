@@ -64,13 +64,13 @@ export default function SettingsModal({
     
     return (
       <div 
-        className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50"
+        className="fixed inset-0 flex items-center justify-center bg-black/60 dark:bg-black/80 backdrop-blur-sm z-50"
         onClick={(e: React.MouseEvent<HTMLDivElement>) => e.target === e.currentTarget && onClose()}
       >
-        <div className="bg-white rounded-xl shadow-lg w-full max-w-md mx-4 animate-in slide-in-from-bottom duration-300">
-          <div className="flex items-center justify-between p-4 border-b">
-            <h2 className="text-lg font-medium">Settings</h2>
-            <button onClick={onClose} className="p-1.5 rounded-full text-gray-500 hover:bg-gray-100">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg w-full max-w-md mx-4 animate-in slide-in-from-bottom duration-300">
+          <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+            <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">Settings</h2>
+            <button onClick={onClose} className="p-1.5 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700">
               <X size={18} />
             </button>
           </div>
@@ -92,16 +92,16 @@ export default function SettingsModal({
             />
           </div>
           
-          <div className="p-4 bg-gray-50 border-t flex justify-end gap-3">
+          <div className="p-4 bg-gray-50 dark:bg-gray-750 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-3">
             <button 
               onClick={onClose} 
-              className="px-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-700 hover:bg-gray-50"
+              className="px-4 py-2 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600"
             >
               Cancel
             </button>
             <button 
               onClick={() => { onSave(settings); onClose(); }}
-              className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg"
+              className="px-4 py-2 bg-purple-600 hover:bg-purple-700 dark:bg-purple-700 dark:hover:bg-purple-800 text-white rounded-lg"
             >
               Save
             </button>
