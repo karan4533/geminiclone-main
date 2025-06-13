@@ -91,7 +91,7 @@ export default function ChatInput({ onSend, onOpenSettings, isLoading }: ChatInp
     if (e.dataTransfer.files) {
       await handleFileSelect(e.dataTransfer.files);
     }
-  }, []);
+  }, [handleFileSelect]);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();

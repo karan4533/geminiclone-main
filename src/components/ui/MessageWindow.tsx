@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import { ChatMessage, MessagePart, FileUpload } from "@/types";
-import { User, Bot, Loader2, Copy, Check, Download, Eye, File, Image as ImageIcon } from "lucide-react";
+import { User, Bot, Copy, Check, Download, Eye, File, Image as ImageIcon } from "lucide-react";
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';

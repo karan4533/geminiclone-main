@@ -7,7 +7,7 @@ import SettingsModal from "@/components/ui/SettingsModal";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import WelcomeScreen from "@/components/ui/WelcomeScreen";
 import { ChatMessage, ChatSettings, MessageRole, FileUpload, MessagePart } from "@/types";
-import { Sparkles, Zap } from "lucide-react";
+import { Zap } from "lucide-react";
 
 export default function Home() {
   const [history, setHistory] = useState<ChatMessage[]>([]);

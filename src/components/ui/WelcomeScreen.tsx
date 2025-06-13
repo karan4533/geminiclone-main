@@ -95,7 +95,7 @@ export default function WelcomeScreen({ onSend }: WelcomeScreenProps) {
                       {prompt.description}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-500 italic bg-gray-50 dark:bg-gray-700/50 px-3 py-2 rounded-lg">
-                      "{prompt.prompt}"
+                      &ldquo;{prompt.prompt}&rdquo;
                     </p>
                   </div>
                 </div>
