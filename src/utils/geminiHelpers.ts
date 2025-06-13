@@ -16,16 +16,24 @@ export async function chattogemini(
   history: ChatHistory,
   settings: ChatSettings
 ): Promise<string> {
+  console.log("Starting Gemini chat with:", {
+    partsCount: messageParts.length,
+    historyLength: history.length,
+    model: settings.model
+  });
+  
   // Choose appropriate model based on content type
   let modelName = settings.model || "gemini-1.5-flash";
   
   // Check if we have multimodal content (images/files)
   const hasMultimodalContent = messageParts.some(part => 'inlineData' in part);
+  console.log("Has multimodal content:", hasMultimodalContent);
   
   // Ensure we use a vision-capable model for multimodal content
   if (hasMultimodalContent) {
     // Use vision-capable models for multimodal content
     if (modelName.includes('flash-8b')) {
+      console.log("Switching from flash-8b to flash for multimodal content");
       modelName = 'gemini-1.5-flash'; // 8B doesn't support vision
     }
   }

@@ -42,38 +42,70 @@ export default function ChatInput({ onSend, onOpenSettings, isLoading }: ChatInp
   };
 
   const processFile = useCallback(async (file: File): Promise<FileUpload | null> => {
+    console.log('Processing file:', { name: file.name, type: file.type, size: file.size });
+    
     if (file.size > MAX_FILE_SIZE) {
       alert(`File ${file.name} is too large. Maximum size is 10MB.`);
       return null;
     }
 
     if (!SUPPORTED_FILE_TYPES.includes(file.type)) {
-      alert(`File type ${file.type} is not supported.`);
+      alert(`File type ${file.type} is not supported. Supported types: Images (JPEG, PNG, GIF, WebP), PDF, and Text files.`);
       return null;
     }
 
     return new Promise((resolve) => {
       const reader = new FileReader();
+      
       reader.onload = (e) => {
-        const result = e.target?.result as string;
-        const base64Data = result.split(',')[1];
-        
-        const fileUpload: FileUpload = {
-          id: `${Date.now()}-${Math.random()}`,
-          name: file.name,
-          type: file.type,
-          size: file.size,
-          data: base64Data,
-          preview: SUPPORTED_IMAGE_TYPES.includes(file.type) ? result : undefined
-        };
-        
-        resolve(fileUpload);
+        try {
+          const result = e.target?.result as string;
+          
+          if (!result || !result.includes(',')) {
+            console.error('Invalid file data format');
+            alert(`Failed to process ${file.name}. Please try again.`);
+            resolve(null);
+            return;
+          }
+          
+          const base64Data = result.split(',')[1];
+          
+          if (!base64Data || base64Data.length === 0) {
+            console.error('Empty file data');
+            alert(`File ${file.name} appears to be empty. Please try a different file.`);
+            resolve(null);
+            return;
+          }
+          
+          const fileUpload: FileUpload = {
+            id: `${Date.now()}-${Math.random()}`,
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            data: base64Data,
+            preview: SUPPORTED_IMAGE_TYPES.includes(file.type) ? result : undefined
+          };
+          
+          console.log('File processed successfully:', { name: file.name, dataLength: base64Data.length });
+          resolve(fileUpload);
+        } catch (error) {
+          console.error('Error processing file:', error);
+          alert(`Failed to process ${file.name}. Please try again.`);
+          resolve(null);
+        }
       };
+      
+      reader.onerror = (error) => {
+        console.error('FileReader error:', error);
+        alert(`Failed to read ${file.name}. Please try again.`);
+        resolve(null);
+      };
+      
       reader.readAsDataURL(file);
     });
   }, []);
 
-  const handleFileSelect = async (selectedFiles: FileList) => {
+  const handleFileSelect = useCallback(async (selectedFiles: FileList) => {
     const fileArray = Array.from(selectedFiles);
     const processedFiles = await Promise.all(
       fileArray.map(file => processFile(file))
@@ -82,7 +114,7 @@ export default function ChatInput({ onSend, onOpenSettings, isLoading }: ChatInp
     const validFiles = processedFiles.filter(Boolean) as FileUpload[];
     setFiles(prev => [...prev, ...validFiles]);
     setShowAttachMenu(false);
-  };
+  }, [processFile]);
 
   const handleDrop = useCallback(async (e: React.DragEvent) => {
     e.preventDefault();
