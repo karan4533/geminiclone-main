@@ -22,6 +22,8 @@ export default function Home() {
   const generateMessageId = () => `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
   const handleSend = async (message: string, files?: FileUpload[]) => {
+    console.log('🚀 Starting handleSend:', { message: message?.substring(0, 50), filesCount: files?.length });
+    
     // Create message parts
     const parts: MessagePart[] = [];
     
@@ -31,6 +33,7 @@ export default function Home() {
     
     // Add file parts if present
     if (files && files.length > 0) {
+      console.log('📁 Processing files:', files.map(f => ({ name: f.name, type: f.type, size: f.size })));
       files.forEach(file => {
         parts.push({
           inlineData: {
@@ -54,6 +57,7 @@ export default function Home() {
     setIsLoading(true);
 
     try {
+      console.log('🌐 Making API call to /api/chat...');
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
@@ -67,7 +71,9 @@ export default function Home() {
         }),
       });
 
+      console.log('📡 API Response received:', { status: response.status, ok: response.ok });
       const data = await response.json();
+      console.log('📄 Response data:', { hasError: !!data.error, hasResponse: !!data.response });
 
       if (data.error) {
         console.error("AI Error:", data.error);
@@ -171,6 +177,20 @@ export default function Home() {
                 New Chat
               </button>
             )}
+            <button
+              onClick={async () => {
+                try {
+                  const response = await fetch('/api/test');
+                  const data = await response.json();
+                  alert(`API Test: ${JSON.stringify(data, null, 2)}`);
+                } catch (error) {
+                  alert(`API Test Failed: ${error}`);
+                }
+              }}
+              className="px-3 py-2 text-xs bg-blue-100 hover:bg-blue-200 dark:bg-blue-900 dark:hover:bg-blue-800 text-blue-700 dark:text-blue-300 rounded-lg transition-all duration-200 border border-blue-200 dark:border-blue-600"
+            >
+              Debug
+            </button>
             <ThemeToggle />
           </div>
         </div>
