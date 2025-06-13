@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Settings, Send, X, Loader2, Paperclip, Image, File, Plus, Trash2 } from "lucide-react";
+import { Settings, Send, X, Loader2, Paperclip, ImageIcon, File, Plus, Trash2 } from "lucide-react";
+import Image from "next/image";
 import { FileUpload } from "@/types";
 
 interface ChatInputProps {
@@ -207,10 +208,13 @@ export default function ChatInput({ onSend, onOpenSettings, isLoading }: ChatInp
                 <div key={file.id} className="relative group">
                   <div className="flex items-center gap-2 p-2 bg-gray-50 dark:bg-gray-800 rounded-lg border">
                     {file.preview ? (
-                      <img 
+                      <Image 
                         src={file.preview} 
-                        alt={file.name}
+                        alt={`Preview of ${file.name}`}
+                        width={32}
+                        height={32}
                         className="w-8 h-8 rounded object-cover"
+                        unoptimized
                       />
                     ) : (
                       <File size={16} className="text-gray-500" />
@@ -325,7 +329,7 @@ export default function ChatInput({ onSend, onOpenSettings, isLoading }: ChatInp
                       }}
                       className="w-full px-4 py-2 text-left hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-2 text-sm"
                     >
-                      <Image size={16} />
+                      <ImageIcon size={16} />
                       Images
                     </button>
                     <button

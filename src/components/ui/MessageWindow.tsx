@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from "react";
 import { ChatMessage, MessagePart, FileUpload } from "@/types";
 import { User, Bot, Copy, Check, Download, Eye, File, Image as ImageIcon } from "lucide-react";
+import Image from "next/image";
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -116,10 +117,14 @@ const FilePreview = ({ file }: { file: FileUpload }) => {
       
       {isExpanded && isImage && file.preview && (
         <div className="mt-3">
-          <img 
+          <Image 
             src={file.preview} 
-            alt={file.name}
+            alt={`Full preview of ${file.name}`}
+            width={800}
+            height={600}
             className="max-w-full h-auto rounded border"
+            unoptimized
+            style={{ width: 'auto', height: 'auto' }}
           />
         </div>
       )}
