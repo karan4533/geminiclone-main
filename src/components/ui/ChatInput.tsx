@@ -10,7 +10,8 @@ interface ChatInputProps {
   isLoading?: boolean;
 }
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB - Reduced for Vercel compatibility
+const MAX_TOTAL_SIZE = 8 * 1024 * 1024; // 8MB total for all files
 const SUPPORTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 const SUPPORTED_FILE_TYPES = [
   'application/pdf',
@@ -46,7 +47,7 @@ export default function ChatInput({ onSend, onOpenSettings, isLoading }: ChatInp
     console.log('Processing file:', { name: file.name, type: file.type, size: file.size });
     
     if (file.size > MAX_FILE_SIZE) {
-      alert(`File ${file.name} is too large. Maximum size is 10MB.`);
+      alert(`File ${file.name} is too large. Maximum size is 4MB.`);
       return null;
     }
 

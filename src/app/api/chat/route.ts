@@ -3,6 +3,8 @@ import { chattogemini } from "@/utils/geminiHelpers";
 import { ChatHistory, ChatSettings, FileUpload, MessagePart } from "@/types";
 
 export async function POST(request: Request) {
+  const startTime = Date.now();
+  
   try {
     // Check if API key is available
     if (!process.env.GEMINI_API_KEY) {
@@ -13,7 +15,25 @@ export async function POST(request: Request) {
       );
     }
 
-    const { userMessage, history, settings, files } = (await request.json()) as {
+    // Check request size
+    const contentLength = request.headers.get('content-length');
+    console.log("📦 Request size:", contentLength ? `${Math.round(parseInt(contentLength) / 1024)}KB` : 'unknown');
+    
+    // Parse request with timeout handling
+    let requestData;
+    try {
+      const requestText = await request.text();
+      console.log("📝 Request body size:", Math.round(requestText.length / 1024), "KB");
+      requestData = JSON.parse(requestText);
+    } catch (parseError) {
+      console.error("❌ Failed to parse request:", parseError);
+      return NextResponse.json(
+        { error: "Invalid request format. Request too large or malformed." },
+        { status: 400 }
+      );
+    }
+
+    const { userMessage, history, settings, files } = requestData as {
       userMessage: string;
       history: ChatHistory;
       settings: ChatSettings;
