@@ -23,7 +23,8 @@ export async function POST(request: Request) {
     console.log("API Request received:", {
       hasMessage: !!userMessage?.trim(),
       filesCount: files?.length || 0,
-      model: settings?.model
+      model: settings?.model,
+      timestamp: new Date().toISOString()
     });
 
     // Prepare message parts for multimodal content
